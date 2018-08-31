@@ -1,0 +1,13 @@
+[package]
+name = "test"
+version = "0.1.0"
+
+[lib]
+path = "src/test.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+lazy_static = "^1.1.0"
+ed25519-dalek = "^0.8.0"
+blake2 = "^0.7.1"
+wasm-bindgen = "^0.2.19"
