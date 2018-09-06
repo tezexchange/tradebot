@@ -1,27 +1,41 @@
 import bs58check from 'bs58check'
 import sodium from 'libsodium-wrappers'
 import bip39 from 'bip39'
+import https from 'https'
+import { URL } from 'url'
 
 const combineUint8Array = (x, y) => {
   return new Buffer(Array.from(x).concat(Array.from(y)))
 }
 
-const RPCall = (url, data, method) => {
+const RPCall = (url, input, method) => {
   return new Promise((resolve, reject) => {
-    const req = new XMLHttpRequest()
-    req.addEventListener('load', pe => {
-      if (req.status === 200)
-        resolve(JSON.parse(pe.target.responseText))
-      else
-        reject(pe.target.responseText)
+    const url_info = new URL(url)
+
+    let data = ''
+    const req = https.request({
+      method: method,
+      origin: url_info.origin,
+      host: url_info.host,
+      path: url_info.pathname
+    }, res => {
+      res.on('data', d => {
+        data += d + ''
+      })
+      res.on('end', () => {
+        if (data) {
+          resolve(JSON.parse(data.trim()))
+        }
+        else
+          reject()
+      })
     })
-    req.addEventListener('error', reject)
-    req.addEventListener('abort', reject)
-    req.open(method, url)
+    req.on('error', reject)
     if (method === 'POST') {
-      req.setRequestHeader('Content-Type', 'application/json')
+      req.setHeader('Content-Type', 'application/json')
+      req.write(JSON.stringify(input))
     }
-    req.send(JSON.stringify(data))
+    req.end()
   })
 }
 
@@ -254,6 +268,7 @@ const mark = {
 
 export class TZClient {
   constructor(params = {}) {
+    this.ready = sodium.ready
     this.fail_check = Promise.resolve()
     this.host = params.host || 'https://testnet.tezbridge.com'
     this.chain_id = 'main'

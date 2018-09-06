@@ -1,13 +1,20 @@
 import { TZClient } from './tzclient.js'
-import transactions from './transactions.js'
-import { getContract } from './contracts.js'
-import { test, hash } from './test.rs'
-// import { up, show } from './test.rs'
+import Api from 'tezexchange-api'
 
-// const tzclient = new TZClient({
-//   secret_key: 'edskRwCM7hMRBCFuqqAwkrvyrMiRNvA5NVjN8Neg9UfT5xUpcSRJQDb8y2HgBvwAzM6Ah9d4ykZ1HgN8N426ZYrntLES5gZv79'
-// })
+export const getApiClient = async (sk, version) => {
+  const tzclient = new TZClient()
+  await tzclient.ready
+  tzclient.importKey({secret_key: sk})
+  return new Api(tzclient, null, version)
+}
 
-// console.log(test(2))
-console.log(hash())
-console.log(test(3))
+(async () => {
+  const ac = await getApiClient('edskRwCM7hMRBCFuqqAwkrvyrMiRNvA5NVjN8Neg9UfT5xUpcSRJQDb8y2HgBvwAzM6Ah9d4ykZ1HgN8N426ZYrntLES5gZv79', 'testnet#3')
+  try {
+    // await ac.getStorage('main')
+    // console.log(JSON.stringify(await ac.getOrders()))
+    console.log(JSON.stringify(await ac.getRewardInfo(ac.client.key_pair.public_key_hash)))
+  } catch (err) {
+    console.log(err)
+  }
+})()

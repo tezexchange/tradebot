@@ -2,10 +2,10 @@
   "name": "tradebot",
   "version": "1.0.0",
   "description": "trade bot lib for tez.exchange",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "parcel src/index.html",
-    "build": "rm -rf dist && parcel build src/index.html --no-source-maps"
+    "dev": "parcel watch src/index.js --target node",
+    "build": "rm -rf dist && parcel build src/index.js --target node"
   },
   "repository": {
     "type": "git",
@@ -20,11 +20,14 @@
   "dependencies": {
     "bip39": "^2.5.0",
     "bs58check": "^2.1.2",
-    "libsodium-wrappers": "^0.7.3"
+    "libsodium": "^0.7.3",
+    "libsodium-wrappers": "^0.7.3",
+    "tezexchange-api": "file:../api"
   },
   "devDependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-stage-3": "^6.24.1",
-    "parcel-bundler": "^1.9.7",
-    "parcel-plugin-wasmbindgen": "^1.0.2"
+    "babel-runtime": "^6.26.0",
+    "parcel-bundler": "^1.9.7"
   }
 }
