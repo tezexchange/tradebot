@@ -22,7 +22,7 @@
     "bs58check": "^2.1.2",
     "libsodium": "^0.7.3",
     "libsodium-wrappers": "^0.7.3",
-    "tezexchange-api": "file:../api"
+    "tezexchange-api": "^1.0.2"
   },
   "devDependencies": {
     "babel-plugin-transform-runtime": "^6.23.0",
