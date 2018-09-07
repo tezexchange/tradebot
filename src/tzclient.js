@@ -3,6 +3,7 @@ import sodium from 'libsodium-wrappers'
 import bip39 from 'bip39'
 import https from 'https'
 import { URL } from 'url'
+import crypto from 'crypto'
 
 const combineUint8Array = (x, y) => {
   return new Buffer(Array.from(x).concat(Array.from(y)))
@@ -311,35 +312,25 @@ export class TZClient {
   importKey(params) {
     this.key_pair = {}
 
-    if (params.encrypted_seed && window.crypto.subtle) {
+    if (params.encrypted_seed) {
       const encrypted_seed_bytes = TZClient.dec58(prefix.edesk, params.encrypted_seed)
       const salt = encrypted_seed_bytes.slice(0, 8)
       const encrypted_seed_msg = encrypted_seed_bytes.slice(8)
 
-      this.fail_check = window.crypto.subtle.importKey(
-        'raw',
-        new TextEncoder('utf-8').encode(params.password),
-        {
-          name: 'PBKDF2',
-        },
-        false, 
-        ['deriveBits']
-      )
-      .then(key => {
-        return window.crypto.subtle.deriveBits(
-          {
-            name: 'PBKDF2',
-            salt: salt,
-            iterations: 32768,
-            hash: {name: 'SHA-512'}
-          },
-          key,
-          256 
-        )
-      })
-      .then(key => {
-        const seed = TZClient.libs.sodium.crypto_secretbox_open_easy(encrypted_seed_msg, new Uint8Array(24), new Uint8Array(key))
-        this.key_pair = TZClient.getKeysFromSeed(seed)
+      return new Promise((resolve, reject) => {
+        crypto.pbkdf2(params.password, salt, 32768, 32, 'sha512', (err, derivedKey) => {
+          if (err) {
+            reject(err)
+          }
+
+          try {
+            const seed = sodium.crypto_secretbox_open_easy(encrypted_seed_msg, new Buffer(24), derivedKey)
+            this.key_pair = TZClient.getKeysFromSeed(seed)
+            resolve()
+          } catch(err) {
+            reject(err)
+          }
+        })
       })
     }
 
@@ -359,6 +350,8 @@ export class TZClient {
         public_key_hash: TZClient.enc58(prefix.identity, sodium.crypto_generichash(20, raw_public_key))
       }
     }
+
+    return Promise.resolve()
   }
 
   call(path, data = {}) {

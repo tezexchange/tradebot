@@ -1,20 +1,31 @@
 import { TZClient } from './tzclient.js'
 import Api from 'tezexchange-api'
+import readline from 'readline'
 
-export const getApiClient = async (sk, version) => {
-  const tzclient = new TZClient()
-  await tzclient.ready
-  tzclient.importKey({secret_key: sk})
-  return new Api(tzclient, null, version)
+const readInput = (q) => {
+  return new Promise((resolve, reject) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout
+    })
+    rl._writeToOutput = function _writeToOutput(stringToWrite) {
+      if (stringToWrite.length === 1)
+        rl.output.write("*")
+      else
+        rl.output.write(stringToWrite)
+    }
+    rl.question(q, (answer) => {
+      rl.close()
+      resolve(answer)
+    })
+  })
 }
 
-(async () => {
-  const ac = await getApiClient('edskRwCM7hMRBCFuqqAwkrvyrMiRNvA5NVjN8Neg9UfT5xUpcSRJQDb8y2HgBvwAzM6Ah9d4ykZ1HgN8N426ZYrntLES5gZv79', 'testnet#3')
-  try {
-    // await ac.getStorage('main')
-    // console.log(JSON.stringify(await ac.getOrders()))
-    console.log(JSON.stringify(await ac.getRewardInfo(ac.client.key_pair.public_key_hash)))
-  } catch (err) {
-    console.log(err)
-  }
-})()
+export const getApiClient = async (version) => {
+  const tzclient = new TZClient()
+  await tzclient.ready
+  const encrypted_seed = await readInput('Encrypted Seed(edesk):')
+  const password = await readInput('Password:')
+  await tzclient.importKey({encrypted_seed, password})
+  return new Api(tzclient, null, version)
+}
