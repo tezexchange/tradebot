@@ -1,5 +1,5 @@
 {
-  "name": "tradebot",
+  "name": "tezexchange-tradebot",
   "version": "1.0.0",
   "description": "trade bot lib for tez.exchange",
   "main": "dist/index.js",
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/tezexchange/tradebot.git"
   },
-  "author": "",
+  "author": "catsigma",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tezexchange/tradebot/issues"
