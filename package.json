@@ -1,6 +1,6 @@
 {
   "name": "tezexchange-tradebot",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "trade bot lib for tez.exchange",
   "main": "dist/index.js",
   "scripts": {
@@ -18,16 +18,16 @@
   },
   "homepage": "https://github.com/tezexchange/tradebot#readme",
   "dependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-runtime": "^6.26.0",
     "bip39": "^2.5.0",
     "bs58check": "^2.1.2",
     "libsodium": "^0.7.3",
     "libsodium-wrappers": "^0.7.3",
-    "tezexchange-api": "^1.0.2"
+    "tezexchange-api": "^1.0.3"
   },
   "devDependencies": {
-    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-stage-3": "^6.24.1",
-    "babel-runtime": "^6.26.0",
     "parcel-bundler": "^1.9.7"
   }
 }
