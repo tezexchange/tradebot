@@ -10,7 +10,7 @@ npm install --save tezexchange-tradebot
 ```
 const tradebot = require('tezexchange-tradebot')
 
-tradebot.getApiClient()
+tradebot.getApiClient({})
 .then(ac => {
   return ac.getTokenInfo(ac.tokens.TES, ac.client.key_pair.public_key_hash)
 })

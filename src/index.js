@@ -24,9 +24,9 @@ const readInput = (q, need_hide) => {
 }
 
 export const getApiClient = async ({
-  version,
-  secret_key,
-  encrypted_seed
+  version = undefined,
+  secret_key = undefined,
+  encrypted_seed = undefined
 }) => {
   const tzclient = new TZClient()
   await tzclient.ready
