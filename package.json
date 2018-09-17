@@ -1,6 +1,6 @@
 {
   "name": "tezexchange-tradebot",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "trade bot lib for tez.exchange",
   "main": "dist/index.js",
   "scripts": {
