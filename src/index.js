@@ -38,3 +38,7 @@ export const getApiClient = async (version) => {
   console.log('=== KEY IMPORTED ===')
   return new Api(tzclient, null, version)
 }
+
+export default {
+  getApiClient
+}
