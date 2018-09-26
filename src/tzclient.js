@@ -24,11 +24,11 @@ const RPCall = (url, input, method) => {
         data += d + ''
       })
       res.on('end', () => {
-        if (data) {
+        try {
           resolve(JSON.parse(data.trim()))
+        } catch (e) {
+          reject(data)
         }
-        else
-          reject()
       })
     })
     req.on('error', reject)

@@ -1,6 +1,6 @@
 {
   "name": "tezexchange-tradebot",
-  "version": "1.0.11",
+  "version": "1.0.15",
   "description": "trade bot lib for tez.exchange",
   "main": "dist/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "bs58check": "^2.1.2",
     "libsodium": "^0.7.3",
     "libsodium-wrappers": "^0.7.3",
-    "tezexchange-api": "^1.0.5"
+    "tezexchange-api": "^1.0.8"
   },
   "devDependencies": {
     "babel-preset-stage-3": "^6.24.1",
