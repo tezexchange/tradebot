@@ -24,11 +24,12 @@ const readInput = (q, need_hide) => {
 }
 
 export const getApiClient = async ({
-  version = undefined,
-  secret_key = undefined,
-  encrypted_seed = undefined
+  version,
+  secret_key,
+  encrypted_seed,
+  host
 }) => {
-  const tzclient = new TZClient()
+  const tzclient = new TZClient({host})
   await tzclient.ready
 
   if (secret_key) {
@@ -49,6 +50,7 @@ export const getApiClient = async ({
   }
 
   console.log('=== KEY IMPORTED ===')
+  console.log(`=== HOST: ${tzclient.host} ===`)
   return new Api(tzclient, null, version)
 }
 
